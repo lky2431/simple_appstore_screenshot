@@ -3,8 +3,10 @@ This package help you to create appstore screenshot directly within the app.
 ## Features
 
 This package can create screenshot easily in app. The size of the screenshot can be uploaded to Google Play Store and Apple AppStore directly. 
-It is recommended to use this package in tablet to get a larger view.
+It is recommended to use this package in tablet.
 
+<img src="https://github.com/lky2431/simple_appstore_screenshot/assets/61407859/e403b741-54a8-4fe3-bb55-29e7b4ca9adb" width="300" />
+<img src="https://github.com/lky2431/simple_appstore_screenshot/assets/61407859/25fdb1e3-25e8-47f3-af1a-c95e34c3cc0d" width="300" />
 
 
 ## Getting started
