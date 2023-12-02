@@ -1,6 +1,8 @@
 name: simple_appstore_screenshot
 description: Flutter Library to create appstore easily in your app easily
-version: 0.0.1
+version: 0.0.3
+repository: https://github.com/lky2431/simple_appstore_screenshot
+homepage: https://pub.dev/packages/simple_appstore_screenshot
 
 
 environment:

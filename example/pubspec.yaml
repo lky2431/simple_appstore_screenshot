@@ -1,6 +1,6 @@
 name: example
 description: A project that showcases usage of simple_appstore_screenshot
-
+publish_to: none
 version: 1.0.0+1
 
 environment:
@@ -15,11 +15,13 @@ dependencies:
   simple_appstore_screenshot:
     path: ../
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^2.0.0
+
 
 
 flutter:

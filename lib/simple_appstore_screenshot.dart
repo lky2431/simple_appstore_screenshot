@@ -1,4 +1,3 @@
 library simple_appstore_screenshot;
 
-export 'src/SimpleScreenShot.dart';
-
+export 'src/simple_screen_shot.dart';

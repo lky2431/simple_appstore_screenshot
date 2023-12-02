@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
 }
 
 class CupertinoPage extends StatelessWidget {
-  const CupertinoPage({required this.title});
+  const CupertinoPage({super.key, required this.title});
   final String title;
 
   @override
@@ -91,7 +91,7 @@ class CupertinoPage extends StatelessWidget {
 }
 
 class MaterialPage extends StatelessWidget {
-  const MaterialPage({required this.title});
+  const MaterialPage({super.key, required this.title});
   final String title;
 
   @override

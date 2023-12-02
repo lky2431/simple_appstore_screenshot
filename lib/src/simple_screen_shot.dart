@@ -1,11 +1,8 @@
-import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'Capture.dart';
-import 'ScreenShotDevice.dart';
-
+import 'capture.dart';
+import 'screen_shot_device.dart';
 
 /// A Widget to create the appstore screenshot easy
 /// Add callback to take screenshot
@@ -54,20 +51,20 @@ class _SimpleScreenShotState extends State<SimpleScreenShot> {
   double labelPadding = 0;
   Orientation orientation = Orientation.portrait;
   Locale _locale = const Locale('en');
-  double textScale = 1;
+
   final GlobalKey _key = GlobalKey();
 
   double get shrinkRatio => orientation == Orientation.portrait ? 1.5 : 1.0;
 
   ScreenShotDevice device = ScreenShotDevice.iphone14promax;
 
-  Size get _ScreenSize => (getScreenSize(device) / _ratio)
+  Size get _screenSize => (getScreenSize(device) / _ratio)
       .reverse(orientation == Orientation.landscape);
 
-  Size get _PhoneSize => showDevice
+  Size get _phoneSize => showDevice
       ? (getPhoneSize(device) / _ratio)
           .reverse(orientation == Orientation.landscape)
-      : _ScreenSize;
+      : _screenSize;
 
   double get _ratio =>
       (3500 / shrinkRatio / MediaQuery.of(context).size.longestSide) *
@@ -78,7 +75,6 @@ class _SimpleScreenShotState extends State<SimpleScreenShot> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
-        textScale = MediaQuery.of(context).textScaleFactor;
         _locale = Locale(Localizations.localeOf(context).languageCode,
             Localizations.localeOf(context).countryCode);
       });
@@ -114,7 +110,7 @@ class _SimpleScreenShotState extends State<SimpleScreenShot> {
                       alignment: Alignment.topCenter,
                       scale: 1 / shrinkRatio,
                       child: SizedBox.fromSize(
-                        size: _ScreenSize,
+                        size: _screenSize,
                         child: RepaintBoundary(
                           key: _key,
                           child: Center(
@@ -127,20 +123,19 @@ class _SimpleScreenShotState extends State<SimpleScreenShot> {
                                   gradient: widget.gradient),
                               child: MediaQuery(
                                 data: MediaQuery.of(context).copyWith(
-                                    size: _PhoneSize,
-                                    textScaleFactor: textScale,
+                                    size: _phoneSize,
                                     padding: EdgeInsets.only(
                                         top: showDevice
                                             ? orientation ==
                                                     Orientation.portrait
-                                                ? _PhoneSize.height *
+                                                ? _phoneSize.height *
                                                     getAppBarRatio(device)
                                                 : 0
                                             : 0,
                                         left: showDevice
                                             ? orientation ==
                                                     Orientation.landscape
-                                                ? _PhoneSize.width *
+                                                ? _phoneSize.width *
                                                     getAppBarRatio(device)
                                                 : 0
                                             : 0)),
@@ -162,7 +157,7 @@ class _SimpleScreenShotState extends State<SimpleScreenShot> {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: SizedBox(
-                    height: size.height - _ScreenSize.height / shrinkRatio - 32,
+                    height: size.height - _screenSize.height / shrinkRatio - 32,
                     child: Column(
                       children: [
                         const Divider(),
@@ -183,8 +178,8 @@ class _SimpleScreenShotState extends State<SimpleScreenShot> {
                               _buildLocaleTile(context),
                               if (showDevice) ...[
                                 ListTile(
-                                  leading: SizedBox(
-                                      width: 150, child: const Text("Ratio")),
+                                  leading: const SizedBox(
+                                      width: 150, child: Text("Ratio")),
                                   subtitle: Slider(
                                       label: "Ratio",
                                       max: 1.5,
@@ -225,9 +220,8 @@ class _SimpleScreenShotState extends State<SimpleScreenShot> {
                               ],
                               if (widget.description != null) ...[
                                 ListTile(
-                                  leading: SizedBox(
-                                      width: 150,
-                                      child: const Text("Label Padding")),
+                                  leading: const SizedBox(
+                                      width: 150, child: Text("Label Padding")),
                                   subtitle: Slider(
                                       max: 200,
                                       min: 0,
@@ -267,21 +261,6 @@ class _SimpleScreenShotState extends State<SimpleScreenShot> {
                                   },
                                 ),
                               ],
-                              ListTile(
-                                leading: SizedBox(
-                                    width: 150,
-                                    child: const Text("Text Ratio")),
-                                subtitle: Slider(
-                                    label: "Text Ratio",
-                                    max: 4,
-                                    min: 0.5,
-                                    value: textScale,
-                                    onChanged: (double value) {
-                                      setState(() {
-                                        textScale = value;
-                                      });
-                                    }),
-                              ),
                             ],
                           ),
                         ))
@@ -301,7 +280,7 @@ class _SimpleScreenShotState extends State<SimpleScreenShot> {
     return Align(
       alignment: Alignment.center,
       child: SizedBox.fromSize(
-        size: _PhoneSize,
+        size: _phoneSize,
         child: Transform.scale(
             scale: showDevice ? deviceRatio : 1,
             child: Transform.translate(
@@ -395,7 +374,7 @@ class _SimpleScreenShotState extends State<SimpleScreenShot> {
         onPressed: () {
           setState(onReset);
         },
-        child: Text("Reset"),
+        child: const Text("Reset"),
       ),
       leading: SizedBox(width: 150, child: Text(description)),
       subtitle: Slider(max: 0.5, min: -0.5, value: value, onChanged: onChange),
@@ -467,7 +446,7 @@ class _SimpleScreenShotState extends State<SimpleScreenShot> {
       leading: const Text("Device"),
       trailing: Text(getDeviceLabel(device)),
       onTap: () async {
-        List<Locale> locales = context
+        context
             .findAncestorWidgetOfExactType<WidgetsApp>()!
             .supportedLocales
             .toList();
@@ -490,14 +469,16 @@ class _SimpleScreenShotState extends State<SimpleScreenShot> {
                     ),
                   ));
         } else {
-          ScreenShotDevice? _device = await showModalBottomSheet(
+          await showModalBottomSheet(
               context: context,
               builder: (context) => Column(
                     mainAxisSize: MainAxisSize.min,
                     children: ScreenShotDevice.values
                         .map((e) => TextButton(
                             onPressed: () {
-                              device = e;
+                              setState(() {
+                                device = e;
+                              });
                               Navigator.of(context).pop();
                             },
                             child: Text(getDeviceLabel(e))))
@@ -513,17 +494,6 @@ extension on Size {
   Size reverse(bool result) {
     if (result) {
       return Size(height, width);
-    }
-    return this;
-  }
-}
-
-extension on BoxFit {
-  BoxFit reverse() {
-    if (this == BoxFit.fitHeight) {
-      return BoxFit.fitWidth;
-    } else if (this == BoxFit.fitWidth) {
-      return BoxFit.fitHeight;
     }
     return this;
   }

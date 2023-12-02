@@ -9,15 +9,13 @@ Future<Uint8List?> captureImage(GlobalKey key, double ratio) async {
     try {
       BuildContext? context = key.currentContext;
       RenderRepaintBoundary? boundary =
-      context?.findRenderObject() as RenderRepaintBoundary?;
+          context?.findRenderObject() as RenderRepaintBoundary?;
       if (boundary == null) {
         return null;
       }
-      print(boundary.size);
-
-      ui.Image? image = await boundary.toImage(pixelRatio:  ratio);
+      ui.Image? image = await boundary.toImage(pixelRatio: ratio);
       ByteData? byteData =
-      await image?.toByteData(format: ui.ImageByteFormat.png);
+          await image.toByteData(format: ui.ImageByteFormat.png);
       image.dispose();
       Uint8List? bytes = byteData?.buffer.asUint8List();
       return bytes;

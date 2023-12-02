@@ -1,3 +1,9 @@
-## 0.0.1
+## 0.0.3
+fix problem when selecting device
 
-* TODO: Describe initial release.
+## 0.0.2
+remove the static warning
+
+## 0.0.1
+initial commit
+
